@@ -15,6 +15,26 @@ class CreateMonthlyBillTable extends Migration
     {
         Schema::create('monthly_bill', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('service_period_end');
+            $table->integer('account_no')->unsigned();
+            $table->foreign('account_no')
+                  ->references('account_no')->on('consumer')
+                  ->onDelete('cascade');
+            $table->integer('current_reading')->nullable();
+            $table->integer('previous_reading')->nullable();
+            $table->double('consumption')->nullable();
+            $table->double('cubic_meter_amt')->nullable();
+            $table->double('charges')->nullable();
+            $table->double('net_amount')->nullable();
+            $table->dateTime('billing_date')->nullable();
+            $table->dateTime('due_date')->nullable();
+            $table->string('bill_no')->unsigned();
+            $table->integer('meter_no')->unsigned();
+            $table->string('consumer_type')->nullable();
+            $table->double('seniorcitizen_discount')->nullable();
+            $table->double('paid')->nullable();
+            $table->double('unpaid')->nullable();
+
             $table->timestamps();
         });
     }

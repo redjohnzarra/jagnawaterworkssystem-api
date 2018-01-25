@@ -1,0 +1,5 @@
+to run this project
+run at the project's root directory
+=================================
+php -S localhost:8000 -t public
+=================================

@@ -15,6 +15,16 @@ class CreateReadingTable extends Migration
     {
         Schema::create('reading', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('service_period_end');
+            $table->integer('account_no')->unsigned();
+            $table->foreign('account_no')
+                  ->references('account_no')->on('consumer')
+                  ->onDelete('cascade');
+            $table->dateTime('reading_date');
+            $table->string('read_by')->nullable();
+            $table->integer('current_reading')->nullable();
+            $table->integer('previous_reading')->nullable();
+            $table->integer('meter_number')->nullable();
             $table->timestamps();
         });
     }
