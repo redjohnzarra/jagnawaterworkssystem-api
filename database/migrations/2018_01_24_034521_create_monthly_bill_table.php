@@ -28,8 +28,8 @@ class CreateMonthlyBillTable extends Migration
             $table->double('net_amount')->nullable();
             $table->dateTime('billing_date')->nullable();
             $table->dateTime('due_date')->nullable();
-            $table->string('bill_no')->unsigned();
-            $table->integer('meter_no')->unsigned();
+            $table->string('bill_no')->nullable();
+            $table->integer('meter_no')->nullable();
             $table->string('consumer_type')->nullable();
             $table->double('seniorcitizen_discount')->nullable();
             $table->double('paid')->nullable();

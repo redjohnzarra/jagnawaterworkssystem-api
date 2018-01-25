@@ -22,7 +22,7 @@ class CreateConsumerTable extends Migration
             $table->string('barangay', '50')->nullable();
             $table->string('citizenship', '20')->nullable();
             $table->string('status', '20')->nullable();
-            $table->integer('age', '10')->nullable();
+            // $table->integer('age', '10')->nullable();
             $table->string('sex', '10')->nullable();
             $table->string('orno_appfee', '50')->nullable();
             $table->date('application_date')->nullable();
