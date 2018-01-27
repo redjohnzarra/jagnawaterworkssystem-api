@@ -5,8 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\Payment;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Auth;
 
 class PaymentController extends Controller{
+  /**
+   * Create a new controller instance.
+   *
+   * @return void
+   */
+  public function __construct()
+  {
+      $this->middleware('auth');
+  }
+
   public function getPayments(){
 
     	$payments  = Payment::all();

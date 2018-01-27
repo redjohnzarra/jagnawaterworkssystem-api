@@ -15,7 +15,8 @@ class CreateUserPrivilegesTable extends Migration
     {
         Schema::create('user_privileges', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('username');
+            $table->string('username')->unique();
+            $table->string('api_key');
             $table->string('userlevel');
             $table->string('password');
             $table->timestamps();

@@ -5,8 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\Consumer;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Auth;
 
 class ConsumerController extends Controller{
+  /**
+   * Create a new controller instance.
+   *
+   * @return void
+   */
+  public function __construct()
+  {
+      $this->middleware('auth');
+  }
 
   public function getConsumers() {
     $objList = Consumer::orderBy('lname')->get();

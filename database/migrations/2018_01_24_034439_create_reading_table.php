@@ -21,7 +21,10 @@ class CreateReadingTable extends Migration
                   ->references('account_no')->on('consumer')
                   ->onDelete('cascade');
             $table->dateTime('reading_date');
-            $table->string('read_by')->nullable();
+            $table->integer('read_by')->unsigned();
+            $table->foreign('read_by')
+                  ->references('id')->on('user_privileges')
+                  ->onDelete('cascade');
             $table->integer('current_reading')->nullable();
             $table->integer('previous_reading')->nullable();
             $table->integer('meter_number')->nullable();

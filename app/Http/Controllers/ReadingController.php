@@ -5,8 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\Reading;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Auth;
 
 class ReadingController extends Controller{
+  /**
+   * Create a new controller instance.
+   *
+   * @return void
+   */
+  public function __construct()
+  {
+      $this->middleware('auth');
+  }
+
   public function getReadings(){
 
     	$readings  = Reading::all();
