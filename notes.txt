@@ -1,4 +1,5 @@
 Clone the project, then go to it's root directory.
+tanan naay ~ sa unahan ipadagan sa terminal sa root dir sa cloned project.
 
 1.) Create a database with name "jagnawaterworks";
 2.) ~ composer install
