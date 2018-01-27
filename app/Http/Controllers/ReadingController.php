@@ -7,6 +7,23 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class ReadingController extends Controller{
+  public function getReadings(){
+
+    	$readings  = Reading::all();
+
+    	return response()->json($readings);
+	}
+
+  public function getReadingsByAccountNo($accountNo, Request $request){
+    if(empty($request->input('startDate')) && empty($request->input('endDate'))){
+      $readings = Reading::where('account_no', $accountNo)->get();
+    }else{
+      $readings = Reading::where('account_no', $accountNo)->whereBetween('reading_date', [$request->input('startDate'), $request->input('endDate')])->get();
+    }
+
+    return response()->json($readings);
+  }
+
   public function createReading(Request $request){
 
     	$reading = Reading::create($request->all());
@@ -30,12 +47,5 @@ class ReadingController extends Controller{
     	$reading->delete();
 
     	return response()->json('Removed successfully.');
-	}
-
-	public function index(){
-
-    	$readings  = Reading::all();
-
-    	return response()->json($readings);
 	}
 }

@@ -8,6 +8,15 @@ use Illuminate\Http\Request;
 
 class ConsumerController extends Controller{
 
+  public function getConsumers() {
+    $objList = Consumer::orderBy('lname')->get();
+    return response()->json($objList);
+
+    // $consumers  = Consumer::all();
+    //
+    // return response()->json($consumers);
+  }
+
   public function createConsumer(Request $request){
 
     	$consumer = Consumer::create($request->all());
@@ -15,28 +24,29 @@ class ConsumerController extends Controller{
     	return response()->json($consumer);
 	}
 
-  public function updateConsumer(Request $request, $id){
+  public function updateConsumer($accountNo, Request $request){
+      $userInput = $request->all();
+    	$consumer  = Consumer::find($accountNo);
+      if(empty($consumer)){
+        return response()->json('Consumer not found.');
+      }else{
+        foreach($userInput["items"] as $key=>$item){
+          $consumer[$key] = $item;
+        }
 
-    	$consumer  = Consumer::find($id);
-    	// $consumer->make = $request->input('make');
-    	// $consumer->model = $request->input('model');
-    	// $consumer->year = $request->input('year');
-    	$consumer->save();
+      	// $consumer->lname = $request->input('lname');
+      	// $consumer->fname = $request->input('fname');
+      	// $consumer->mname = $request->input('mname');
+      	$consumer->save();
 
-    	return response()->json($consumer);
+      	return response()->json($consumer);
+      }
 	}
 
-	public function deleteConsumer($id){
-    	$consumer  = Consumer::find($id);
+	public function deleteConsumer($accountNo){
+    	$consumer  = Consumer::find($accountNo);
     	$consumer->delete();
 
     	return response()->json('Removed successfully.');
-	}
-
-	public function index(){
-
-    	$consumers  = Consumer::all();
-
-    	return response()->json($consumers);
 	}
 }

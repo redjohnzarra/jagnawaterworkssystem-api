@@ -7,6 +7,33 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller{
+  public function getPayments(){
+
+    	$payments  = Payment::all();
+
+    	return response()->json($payments);
+	}
+
+  public function getPaymentsByAccountNo($accountNo, Request $request){
+    if(empty($request->input('startDate')) && empty($request->input('endDate'))){
+      $payments = Payment::where('account_no', $accountNo)->get();
+    }else{
+      $payments = Payment::where('account_no', $accountNo)->whereBetween('payment_date', [$request->input('startDate'), $request->input('endDate')])->get();
+    }
+
+    return response()->json($payments);
+  }
+
+  public function getPaymentsByMonthlyBill($monthlyBillId, Request $request){
+    if(empty($request->input('startDate')) && empty($request->input('endDate'))){
+      $payments = Payment::where('bill_no', $monthlyBillId)->get();
+    }else{
+      $payments = Payment::where('bill_no', $monthlyBillId)->whereBetween('payment_date', [$request->input('startDate'), $request->input('endDate')])->get();
+    }
+
+    return response()->json($payments);
+  }
+
   public function createPayment(Request $request){
 
     	$payment = Payment::create($request->all());
@@ -30,12 +57,5 @@ class PaymentController extends Controller{
     	$payment->delete();
 
     	return response()->json('Removed successfully.');
-	}
-
-	public function index(){
-
-    	$payments  = Payment::all();
-
-    	return response()->json($payments);
 	}
 }

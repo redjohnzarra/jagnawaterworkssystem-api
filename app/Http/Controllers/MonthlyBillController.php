@@ -7,6 +7,23 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class MonthlyBillController extends Controller{
+  public function getMonthlyBills(){
+
+    	$monthlyBills  = MonthlyBill::all();
+
+    	return response()->json($monthlyBills);
+	}
+
+  public function getMonthlyBillsByAccountNo($accountNo, Request $request){
+    if(empty($request->input('startDate')) && empty($request->input('endDate'))){
+      $monthlyBills = MonthlyBill::where('account_no', $accountNo)->get();
+    }else{
+      $monthlyBills = MonthlyBill::where('account_no', $accountNo)->whereBetween('created_at', [$request->input('startDate'), $request->input('endDate')])->get();
+    }
+
+    return response()->json($monthlyBills);
+  }
+
   public function createMonthlyBill(Request $request){
 
     	$monthlyBill = MonthlyBill::create($request->all());
@@ -14,15 +31,23 @@ class MonthlyBillController extends Controller{
     	return response()->json($monthlyBill);
 	}
 
-  public function updateMonthlyBill(Request $request, $id){
-
+  public function updateMonthlyBill($id, Request $request){
+      $userInput = $request->all();
     	$monthlyBill  = MonthlyBill::find($id);
-    	// $monthlyBill->make = $request->input('make');
-    	// $monthlyBill->model = $request->input('model');
-    	// $monthlyBill->year = $request->input('year');
-    	$monthlyBill->save();
+      if(empty($monthlyBill)){
+        return response()->json('Monthly Bill not found.');
+      }else{
+        foreach($userInput["items"] as $key=>$item){
+          $monthlyBill[$key] = $item;
+        }
 
-    	return response()->json($monthlyBill);
+      	// $monthlyBill->service_period_end = $request->input('service_period_end');
+      	// $monthlyBill->account_no = $request->input('account_no');
+      	// $monthlyBill->current_reading = $request->input('current_reading');
+      	$monthlyBill->save();
+
+      	return response()->json($monthlyBill);
+      }
 	}
 
 	public function deleteMonthlyBill($id){
@@ -30,12 +55,5 @@ class MonthlyBillController extends Controller{
     	$monthlyBill->delete();
 
     	return response()->json('Removed successfully.');
-	}
-
-	public function index(){
-
-    	$monthlyBills  = MonthlyBill::all();
-
-    	return response()->json($monthlyBills);
 	}
 }
