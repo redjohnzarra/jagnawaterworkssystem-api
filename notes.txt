@@ -1,5 +1,30 @@
+Clone the project, then go to it's root directory.
+
+1.) Create a database with name "jagnawaterworks";
+2.) ~ composer install
+3.) ~ cp .env.example .env
+3.) Set your .env file (username, password, db name and etc);
+4.) ~ php artisan migrate
+
 to run this project
 run at the project's root directory
 =================================
-php -S localhost:8000 -t public
+~ php -S localhost:8000 -t public
 =================================
+
+see web.php for the routes
+
+/api/users ->post username and password and user level
+
+get -> /api/login?username=USERNAMEHERE&password=PASSWORDHERE
+naay json nga return. with key name "api_key".
+
+pwede i store ning api_key sa localstorage tas iremove nasab nig logout.
+
+Ang value sa api_key iappend sa header sa ajax call nga naay key "Authenticate" para ma authorized ang call
+
+ex: axios.create({
+    baseURL: 'https://localhost:8000/api',
+    timeout: 1000,
+    headers: {'Authenticate': VALUE_SA_api_key}
+  });
