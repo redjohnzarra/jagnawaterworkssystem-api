@@ -21,7 +21,7 @@ $router->group(['prefix' => 'userApi'], function () use ($router) {
   $router->get('/users',  ['uses' => 'UserPrivilegesController@getAllUsers']);
   $router->post('/users',  ['uses' => 'UserPrivilegesController@createUserPrivileges']);
   $router->get('/users/{id}',  ['uses' => 'UserPrivilegesController@getUser']);
-  // $router->put('/users/{id}',  ['uses' => 'UserPrivilegesController@updateUserPrivileges']);
+  $router->put('/users/{id}',  ['uses' => 'UserPrivilegesController@updateUserPrivileges']);
   $router->delete('/users/{id}',  ['uses' => 'UserPrivilegesController@deleteUserPrivileges']);
 });
 
