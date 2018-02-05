@@ -15,7 +15,7 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-$router->group(['prefix' => 'api'], function () use ($router) {
+$router->group(['prefix' => 'userApi'], function () use ($router) {
   // Users Route
   $router->get('/login','UserPrivilegesController@authenticate');
   $router->get('/users',  ['uses' => 'UserPrivilegesController@getAllUsers']);
@@ -23,7 +23,9 @@ $router->group(['prefix' => 'api'], function () use ($router) {
   $router->get('/users/{id}',  ['uses' => 'UserPrivilegesController@getUser']);
   // $router->put('/users/{id}',  ['uses' => 'UserPrivilegesController@updateUserPrivileges']);
   $router->delete('/users/{id}',  ['uses' => 'UserPrivilegesController@deleteUserPrivileges']);
+});
 
+$router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($router) {
   // Consumers Route
   $router->get('/consumers',  ['uses' => 'ConsumerController@getConsumers']);
   $router->post('/consumers',  ['uses' => 'ConsumerController@createConsumer']);
