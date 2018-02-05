@@ -21,7 +21,7 @@ $router->group(['prefix' => 'userApi'], function () use ($router) {
   $router->get('/users',  ['uses' => 'UserPrivilegesController@getAllUsers']);
   $router->post('/users',  ['uses' => 'UserPrivilegesController@createUserPrivileges']);
   $router->get('/users/{id}',  ['uses' => 'UserPrivilegesController@getUser']);
-  $router->put('/users/{id}',  ['uses' => 'UserPrivilegesController@updateUserPrivileges']);
+  $router->post('/users/{id}',  ['uses' => 'UserPrivilegesController@updateUserPrivileges']);
   $router->delete('/users/{id}',  ['uses' => 'UserPrivilegesController@deleteUserPrivileges']);
 });
 
@@ -29,21 +29,21 @@ $router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($ro
   // Consumers Route
   $router->get('/consumers',  ['uses' => 'ConsumerController@getConsumers']);
   $router->post('/consumers',  ['uses' => 'ConsumerController@createConsumer']);
-  $router->put('/consumers/{accountNo}',  ['uses' => 'ConsumerController@updateConsumer']);
+  $router->post('/consumers/{accountNo}',  ['uses' => 'ConsumerController@updateConsumer']);
   $router->delete('/consumers/{accountNo}',  ['uses' => 'ConsumerController@deleteConsumer']);
 
   // Monthly Bills Route
   $router->get('/monthly-bills',  ['uses' => 'MonthlyBillController@getMonthlyBills']);
   $router->get('/monthly-bills/account/{accountNo}',  ['uses' => 'MonthlyBillController@getMonthlyBillsByAccountNo']);
   $router->post('/monthly-bills',  ['uses' => 'MonthlyBillController@createMonthlyBill']);
-  $router->put('/monthly-bills/{id}',  ['uses' => 'MonthlyBillController@updateMonthlyBill']);
+  $router->post('/monthly-bills/{id}',  ['uses' => 'MonthlyBillController@updateMonthlyBill']);
   $router->delete('/monthly-bills/{id}',  ['uses' => 'MonthlyBillController@deleteMonthlyBill']);
 
   // Readings Route
   $router->get('/readings',  ['uses' => 'ReadingController@getReadings']);
   $router->get('/readings/account/{accountNo}',  ['uses' => 'ReadingController@getReadingsByAccountNo']);
   $router->post('/readings',  ['uses' => 'ReadingController@createReading']);
-  $router->put('/readings/{id}',  ['uses' => 'ReadingController@updateReading']);
+  $router->post('/readings/{id}',  ['uses' => 'ReadingController@updateReading']);
   $router->delete('/readings/{id}',  ['uses' => 'ReadingController@deleteReading']);
 
   // Payments Route
@@ -51,6 +51,6 @@ $router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($ro
   $router->get('/payments/account/{accountNo}',  ['uses' => 'PaymentController@getPaymentsByAccountNo']);
   $router->get('/payments/monthly-bill/{monthlyBillId}',  ['uses' => 'PaymentController@getPaymentsByMonthlyBill']);
   $router->post('/payments',  ['uses' => 'PaymentController@createPayment']);
-  $router->put('/payments/{id}',  ['uses' => 'PaymentController@updatePayment']);
+  $router->post('/payments/{id}',  ['uses' => 'PaymentController@updatePayment']);
   $router->delete('/payments/{id}',  ['uses' => 'PaymentController@deletePayment']);
 });
