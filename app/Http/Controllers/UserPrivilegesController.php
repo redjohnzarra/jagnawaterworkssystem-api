@@ -26,6 +26,7 @@ class UserPrivilegesController extends Controller{
       $rules = [
           'username' => 'required|unique:user_privileges',
           'password' => 'required',
+          'userlevel' => 'required'
       ];
 
       $messages = [
@@ -45,7 +46,8 @@ class UserPrivilegesController extends Controller{
 
       $user = UserPrivileges::create([
           'username' => $request->get('username'),
-          'password'=> Hash::make($request->get('password'))
+          'password'=> Hash::make($request->get('password')),
+          'userlevel' => $request->get('userlevel'),
       ]);
 
       return response()->json([
