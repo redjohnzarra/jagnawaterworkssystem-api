@@ -74,15 +74,19 @@ class UserPrivilegesController extends Controller{
         // 'unique' => 'User already exists. Username must be unique'
       ];
 
-      $validator = Validator::make($input, $rules, $messages);
-
-      //if validation fails
-      if ($validator->fails()) {
-        return array(
-            'error' => true,
-            'message' => $validator->errors()->all()
-        );
+      $newUsername = $request->get('username');
+      if($newUsername != $user->username){
+        $validator = Validator::make($input, $rules, $messages);
+        //if validation fails
+        if ($validator->fails()) {
+          return array(
+              'error' => true,
+              'message' => $validator->errors()->all()
+          );
+        }
       }
+
+
 
       $user->username        = $request->get('username');
       $user->password     = Hash::make($request->get('password'));
