@@ -20,7 +20,29 @@ class UserPrivilegesController extends Controller{
   }
 
   public function createUserPrivileges(Request $request){
-      $this->validateRequest($request);
+      // $this->validateRequest($request);
+      $input = $request->all();
+
+      $rules = [
+          'username' => 'required|unique:user_privileges',
+          'password' => 'required',
+      ];
+
+      $messages = [
+        // 'required' => 'The :attribute field is required',
+        // 'unique' => 'User already exists. Username must be unique'
+      ];
+
+      $validator = Validator::make($input, $rules, $messages);
+
+      //if validation fails
+      if ($validator->fails()) {
+        return array(
+            'error' => true,
+            'message' => $validator->errors()->all()
+        );
+      }
+
       $user = UserPrivileges::create([
           'username' => $request->get('username'),
           'password'=> Hash::make($request->get('password'))
@@ -36,7 +58,33 @@ class UserPrivilegesController extends Controller{
           return response()->json(['message' => "The user with id: {$id} doesn't exist"], 404);
       }
 
-      $this->validateRequest($request);
+      $input = $request->all();
+
+      $rules = [
+          'username' => 'required|unique:user_privileges',
+          'password' => 'required',
+      ];
+
+      $messages = [
+        // 'required' => 'The :attribute field is required',
+        // 'unique' => 'User already exists. Username must be unique'
+      ];
+
+      $validator = Validator::make($input, $rules, $messages);
+
+      //if validation fails
+      if ($validator->fails()) {
+        return array(
+            'error' => true,
+            'message' => $validator->errors()->all()
+        );
+      }
+
+      $user = UserPrivileges::create([
+          'username' => $request->get('username'),
+          'password'=> Hash::make($request->get('password'))
+      ]);
+
       $user->username        = $request->get('username');
       $user->password     = Hash::make($request->get('password'));
       $user->save();
@@ -114,17 +162,27 @@ class UserPrivilegesController extends Controller{
   }
 
   public function validateRequest(Request $request){
-      $validator = Validator::make($request->all(), [
+      $input = $request->all();
+
+      $rules = [
           'username' => 'required|unique:user_privileges',
           'password' => 'required',
-      ]);
+      ];
+
+      $messages = [
+        // 'required' => 'The :attribute field is required',
+        // 'unique' => 'User already exists. Username must be unique'
+      ];
+
+      $validator = Validator::make($input, $rules, $messages);
 
       //if validation fails
       if ($validator->fails()) {
-          return array(
-              'error' => true,
-              'message' => $validator->errors()->all()
-          );
+        return response()->json($validator->errors(), 422);
+          // return array(
+          //     'error' => true,
+          //     'message' => $validator->errors()->all()
+          // );
       }
   }
 }
