@@ -48,14 +48,18 @@ class UserPrivilegesController extends Controller{
           'password'=> Hash::make($request->get('password'))
       ]);
 
-      return response()->json(['data' => "The user with id: {$user->id} has been created"], 201);
+      return response()->json([
+        'message' => "The user with id: {$user->id} has been created"
+      ], 201);
 	}
 
   public function updateUserPrivileges(Request $request, $id){
       $user = UserPrivileges::find($id);
 
       if(!$user){
-          return response()->json(['message' => "The user with id: {$id} doesn't exist"], 404);
+          return response()->json([
+            'message' => "The user with id: {$id} doesn't exist"
+          ], 404);
       }
 
       $input = $request->all();
@@ -89,14 +93,18 @@ class UserPrivilegesController extends Controller{
       $user->password     = Hash::make($request->get('password'));
       $user->save();
 
-      return response()->json(['data' => "The user with id: {$user->id} has been updated"], 200);
+      return response()->json([
+        'message' => "The user with id: {$user->id} has been updated"
+      ], 200);
 
 	}
 
 	public function deleteUserPrivileges($id){
     	$user  = UserPrivileges::find($id);
       if(!$user){
-          return response()->json(['message' => "The user with id: {$id} doesn't exist"], 404);
+          return response()->json([
+            'message' => "The user with id: {$id} doesn't exist"
+          ], 404);
       }
     	$user->delete();
 
@@ -150,7 +158,7 @@ class UserPrivilegesController extends Controller{
             $apikey = base64_encode(str_random(40));
             UserPrivileges::where('username', $request->input('username'))->update(['api_key' => "$apikey"]);;
 
-            return response()->json(['error' => false,'api_key' => $apikey,'user' => $user]);
+            return response()->json(['api_key' => $apikey,'user' => $user]);
             // return array('error' => false, 'user' => $user);
         } else {
             return array('error' => true, 'message' => 'Invalid password');
