@@ -35,4 +35,9 @@ class Consumer extends Model
   public function payments(){
     return $this->hasMany('App\Models\Payment');
   }
+
+  public function consumerType()
+  {
+    return $this->belongsTo('App\Models\ConsumerType');
+  }
 }

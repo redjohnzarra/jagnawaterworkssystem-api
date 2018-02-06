@@ -52,15 +52,26 @@ class PaymentController extends Controller{
     	return response()->json($payment);
 	}
 
-  public function updatePayment(Request $request, $id){
+  public function updatePayment($id, Request $request){
+      $userInput = $request->all();
 
     	$payment  = Payment::find($id);
-    	// $payment->make = $request->input('make');
-    	// $payment->model = $request->input('model');
-    	// $payment->year = $request->input('year');
-    	$payment->save();
+      if(empty($payment)){
+        return response()->json([
+            'message' => "The payment with id: {$id} doesn't exist"
+          ], 404);
+      }else{
+        foreach($userInput["items"] as $key=>$item){
+          $payment[$key] = $item;
+        }
 
-    	return response()->json($payment);
+        // $payment->make = $request->input('make');
+      	// $payment->model = $request->input('model');
+      	// $payment->year = $request->input('year');
+      	$payment->save();
+
+        return response()->json($payment);
+      }
 	}
 
 	public function deletePayment($id){

@@ -42,15 +42,26 @@ class ReadingController extends Controller{
     	return response()->json($reading);
 	}
 
-  public function updateReading(Request $request, $id){
+  public function updateReading($id, Request $request){
+      $userInput = $request->all();
 
     	$reading  = Reading::find($id);
-    	// $reading->make = $request->input('make');
-    	// $reading->model = $request->input('model');
-    	// $reading->year = $request->input('year');
-    	$reading->save();
+      if(empty($reading)){
+        return response()->json([
+            'message' => "The reading with id: {$id} doesn't exist"
+          ], 404);
+      }else{
+        foreach($userInput["items"] as $key=>$item){
+          $reading[$key] = $item;
+        }
 
-    	return response()->json($reading);
+        // $reading->make = $request->input('make');
+      	// $reading->model = $request->input('model');
+      	// $reading->year = $request->input('year');
+      	$reading->save();
+
+      	return response()->json($reading);
+      }
 	}
 
 	public function deleteReading($id){

@@ -38,7 +38,9 @@ class ConsumerController extends Controller{
       $userInput = $request->all();
     	$consumer  = Consumer::find($accountNo);
       if(empty($consumer)){
-        return response()->json('Consumer not found.');
+        return response()->json([
+            'message' => "The consumer with account no: {$accountNo} doesn't exist"
+          ], 404);
       }else{
         foreach($userInput["items"] as $key=>$item){
           $consumer[$key] = $item;

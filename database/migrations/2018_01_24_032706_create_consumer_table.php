@@ -31,7 +31,10 @@ class CreateConsumerTable extends Migration
             $table->double('appfee')->nullable();
             $table->binary('signature_of_member')->nullable();
             $table->binary('picture')->nullable();
-            $table->string('consumer_type')->nullable();
+            $table->integer('consumer_type')->unsigned();
+            $table->foreign('consumer_type')
+                  ->references('id')->on('consumer_type')
+                  ->onDelete('cascade');
             $table->date('connection_date')->nullable();
             $table->integer('meter_number')->nullable();
             $table->timestamps();

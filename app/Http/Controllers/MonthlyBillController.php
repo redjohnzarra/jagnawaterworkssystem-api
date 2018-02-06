@@ -46,7 +46,9 @@ class MonthlyBillController extends Controller{
       $userInput = $request->all();
     	$monthlyBill  = MonthlyBill::find($id);
       if(empty($monthlyBill)){
-        return response()->json('Monthly Bill not found.');
+        return response()->json([
+            'message' => "The monthly bill with id: {$id} doesn't exist"
+          ], 404);
       }else{
         foreach($userInput["items"] as $key=>$item){
           $monthlyBill[$key] = $item;
