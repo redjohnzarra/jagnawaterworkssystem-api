@@ -42,8 +42,8 @@ class ConsumerController extends Controller{
             'message' => "The consumer with account no: {$accountNo} doesn't exist"
           ], 404);
       }else{
-        foreach($userInput["items"] as $key=>$item){
-          $consumer[$key] = $item;
+        foreach($userInput as $key=>$item){
+          if($key != 'userid') $consumer[$key] = $item;
         }
 
       	// $consumer->lname = $request->input('lname');
@@ -57,7 +57,13 @@ class ConsumerController extends Controller{
 
 	public function deleteConsumer($accountNo){
     	$consumer  = Consumer::find($accountNo);
-    	$consumer->delete();
+      if(empty($consumer)){
+        return response()->json([
+            'message' => "The consumer with account no: {$accountNo} doesn't exist"
+          ], 404);
+      }else{
+    	   $consumer->delete();
+      }
 
     	return response()->json('Removed successfully.');
 	}

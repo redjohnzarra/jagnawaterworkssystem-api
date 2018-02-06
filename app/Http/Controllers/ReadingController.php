@@ -51,8 +51,8 @@ class ReadingController extends Controller{
             'message' => "The reading with id: {$id} doesn't exist"
           ], 404);
       }else{
-        foreach($userInput["items"] as $key=>$item){
-          $reading[$key] = $item;
+        foreach($userInput as $key=>$item){
+          if($key != 'userid') $reading[$key] = $item;
         }
 
         // $reading->make = $request->input('make');
@@ -66,7 +66,13 @@ class ReadingController extends Controller{
 
 	public function deleteReading($id){
     	$reading  = Reading::find($id);
-    	$reading->delete();
+      if(empty($reading)){
+        return response()->json([
+            'message' => "The reading with id: {$id} doesn't exist"
+          ], 404);
+      }else{
+    	   $reading->delete();
+      }
 
     	return response()->json('Removed successfully.');
 	}

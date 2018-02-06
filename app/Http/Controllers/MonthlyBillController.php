@@ -50,8 +50,8 @@ class MonthlyBillController extends Controller{
             'message' => "The monthly bill with id: {$id} doesn't exist"
           ], 404);
       }else{
-        foreach($userInput["items"] as $key=>$item){
-          $monthlyBill[$key] = $item;
+        foreach($userInput as $key=>$item){
+          if($key != 'userid') $monthlyBill[$key] = $item;
         }
 
       	// $monthlyBill->service_period_end = $request->input('service_period_end');
@@ -65,7 +65,13 @@ class MonthlyBillController extends Controller{
 
 	public function deleteMonthlyBill($id){
     	$monthlyBill  = MonthlyBill::find($id);
-    	$monthlyBill->delete();
+      if(empty($monthlyBill)){
+        return response()->json([
+            'message' => "The monthly bill with id: {$id} doesn't exist"
+          ], 404);
+      }else{
+    	   $monthlyBill->delete();
+      }
 
     	return response()->json('Removed successfully.');
 	}

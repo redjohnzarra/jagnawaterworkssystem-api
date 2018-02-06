@@ -17,6 +17,8 @@ class Consumer extends Model
   	'lname','fname','mname','address','birth_date','municipality','barangay','citizenship','status','sex','orno_appfee','application_date','appfee','signature_of_member','picture','consumer_type','connection_date','meter_number'
   ];
 
+  protected $primaryKey = 'account_no';
+
   /**
    * The attributes excluded from the model's JSON form.
    *

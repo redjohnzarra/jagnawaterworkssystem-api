@@ -61,8 +61,8 @@ class PaymentController extends Controller{
             'message' => "The payment with id: {$id} doesn't exist"
           ], 404);
       }else{
-        foreach($userInput["items"] as $key=>$item){
-          $payment[$key] = $item;
+        foreach($userInput as $key=>$item){
+          if($key != 'userid') $payment[$key] = $item;
         }
 
         // $payment->make = $request->input('make');
@@ -76,7 +76,13 @@ class PaymentController extends Controller{
 
 	public function deletePayment($id){
     	$payment  = Payment::find($id);
-    	$payment->delete();
+      if(empty($payment)){
+        return response()->json([
+            'message' => "The payment with id: {$id} doesn't exist"
+          ], 404);
+      }else{
+    	   $payment->delete();
+      }
 
     	return response()->json('Removed successfully.');
 	}

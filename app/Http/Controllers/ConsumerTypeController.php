@@ -38,7 +38,7 @@ class ConsumerTypeController extends Controller{
             'message' => "The consumer type with id: {$consumerTypeId} doesn't exist"
           ], 404);
       }else{
-        foreach($userInput["items"] as $key=>$item){
+        foreach($userInput as $key=>$item){
           $consumerType[$key] = $item;
         }
 
