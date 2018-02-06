@@ -39,7 +39,7 @@ class ConsumerTypeController extends Controller{
           ], 404);
       }else{
         foreach($userInput as $key=>$item){
-          $consumerType[$key] = $item;
+          if($key != 'userid') $consumerType[$key] = $item;
         }
 
       	$consumerType->save();
@@ -50,7 +50,13 @@ class ConsumerTypeController extends Controller{
 
 	public function deleteConsumerType($consumerTypeId){
     	$consumerType  = ConsumerType::find($consumerTypeId);
-    	$consumerType->delete();
+      if(empty($consumerType)){
+        return response()->json([
+            'message' => "The consumer type with id: {$consumerTypeId} doesn't exist"
+          ], 404);
+      }else{
+    	   $consumerType->delete();
+      }
 
     	return response()->json('Removed successfully.');
 	}

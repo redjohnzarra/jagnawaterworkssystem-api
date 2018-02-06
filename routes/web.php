@@ -29,8 +29,8 @@ $router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($ro
   // Consumers Route
   $router->get('/consumer-types',  ['uses' => 'ConsumerTypeController@getConsumerTypes']);
   $router->post('/consumer-types',  ['uses' => 'ConsumerTypeController@createConsumerType']);
-  $router->post('/consumer-types/{$consumerTypeId}',  ['uses' => 'ConsumerTypeController@updateConsumerType']);
-  $router->delete('/consumer-types/{$consumerTypeId}',  ['uses' => 'ConsumerTypeController@deleteConsumerType']);
+  $router->post('/consumer-types/{consumerTypeId}',  ['uses' => 'ConsumerTypeController@updateConsumerType']);
+  $router->delete('/consumer-types/{consumerTypeId}',  ['uses' => 'ConsumerTypeController@deleteConsumerType']);
 
   // Consumers Route
   $router->get('/consumers',  ['uses' => 'ConsumerController@getConsumers']);
