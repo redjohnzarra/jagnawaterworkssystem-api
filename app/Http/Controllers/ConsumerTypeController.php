@@ -23,6 +23,11 @@ class ConsumerTypeController extends Controller{
     return response()->json($objList);
   }
 
+  public function getConsumerType($consumerTypeId) {
+    $consumerType = ConsumerType::find($consumerTypeId);
+    return response()->json($consumerType);
+  }
+
   public function createConsumerType(Request $request){
 
     	$consumerType = ConsumerType::create($request->all());

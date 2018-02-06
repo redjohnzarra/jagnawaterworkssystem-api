@@ -25,6 +25,12 @@ class MonthlyBillController extends Controller{
     	return response()->json($monthlyBills);
 	}
 
+  public function getMonthlyBill($id){
+    	$monthlyBill  = MonthlyBill::find();
+
+    	return response()->json($monthlyBill);
+	}
+
   public function getMonthlyBillsByAccountNo($accountNo, Request $request){
     if(empty($request->input('startDate')) && empty($request->input('endDate'))){
       $monthlyBills = MonthlyBill::where('account_no', $accountNo)->get();

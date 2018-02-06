@@ -27,6 +27,11 @@ class ConsumerController extends Controller{
     // return response()->json($consumers);
   }
 
+  public function getConsumer($accountNo) {
+    $consumer = Consumer::find($accountNo);
+    return response()->json($consumer);
+  }
+
   public function createConsumer(Request $request){
 
     	$consumer = Consumer::create($request->all());

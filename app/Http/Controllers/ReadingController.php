@@ -25,6 +25,12 @@ class ReadingController extends Controller{
     	return response()->json($readings);
 	}
 
+  public function getReading($id){
+    	$reading  = Reading::find($id);
+
+    	return response()->json($reading);
+	}
+
   public function getReadingsByAccountNo($accountNo, Request $request){
     if(empty($request->input('startDate')) && empty($request->input('endDate'))){
       $readings = Reading::where('account_no', $accountNo)->get();

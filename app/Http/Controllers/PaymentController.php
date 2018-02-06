@@ -25,6 +25,13 @@ class PaymentController extends Controller{
     	return response()->json($payments);
 	}
 
+  public function getPayment($id){
+
+    	$payment  = Payment::find($id);
+
+    	return response()->json($payment);
+	}
+
   public function getPaymentsByAccountNo($accountNo, Request $request){
     if(empty($request->input('startDate')) && empty($request->input('endDate'))){
       $payments = Payment::where('account_no', $accountNo)->get();
