@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Consumer extends Model
+class ConsumerType extends Model
 {
-  protected $table = 'consumer';
+  protected $table = 'consumer_type';
 
   /**
    * The attributes that are mass assignable.

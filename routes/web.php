@@ -27,6 +27,12 @@ $router->group(['prefix' => 'userApi'], function () use ($router) {
 
 $router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($router) {
   // Consumers Route
+  $router->get('/consumerTypes',  ['uses' => 'ConsumerTypeController@getConsumerTypes']);
+  $router->post('/consumerTypes',  ['uses' => 'ConsumerTypeController@createConsumerType']);
+  $router->post('/consumerTypes/{$consumerTypeId}',  ['uses' => 'ConsumerTypeController@updateConsumerType']);
+  $router->delete('/consumerTypes/{$consumerTypeId}',  ['uses' => 'ConsumerTypeController@deleteConsumerType']);
+
+  // Consumers Route
   $router->get('/consumers',  ['uses' => 'ConsumerController@getConsumers']);
   $router->post('/consumers',  ['uses' => 'ConsumerController@createConsumer']);
   $router->post('/consumers/{accountNo}',  ['uses' => 'ConsumerController@updateConsumer']);
