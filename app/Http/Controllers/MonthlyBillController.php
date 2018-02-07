@@ -26,7 +26,7 @@ class MonthlyBillController extends Controller{
 	}
 
   public function getMonthlyBill($id){
-    	$monthlyBill  = MonthlyBill::find();
+    	$monthlyBill  = MonthlyBill::find($id);
 
     	return response()->json($monthlyBill);
 	}
