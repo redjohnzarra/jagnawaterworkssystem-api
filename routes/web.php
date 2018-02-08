@@ -64,4 +64,7 @@ $router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($ro
   $router->post('/payments',  ['uses' => 'PaymentController@createPayment']);
   $router->post('/payments/{id}',  ['uses' => 'PaymentController@updatePayment']);
   $router->delete('/payments/{id}',  ['uses' => 'PaymentController@deletePayment']);
+
+  // SMS Route
+  $router->post('/send-sms', ['uses' => 'SMSController@sendSMSURL']);
 });
