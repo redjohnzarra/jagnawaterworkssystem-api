@@ -28,8 +28,12 @@ class ConsumerController extends Controller{
   }
 
   public function getConsumer($accountNo) {
-    $consumer = Consumer::find($accountNo);
+    $consumer = $this->getConsumerObj($accountNo);
     return response()->json($consumer);
+  }
+
+  public function getConsumerObj($accountNo){
+    return Consumer::find($accountNo);
   }
 
   public function createConsumer(Request $request){

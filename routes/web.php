@@ -11,6 +11,8 @@
 |
 */
 
+date_default_timezone_set('Asia/Manila');
+
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
@@ -48,7 +50,7 @@ $router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($ro
   $router->post('/monthly-bills/{id}',  ['uses' => 'MonthlyBillController@updateMonthlyBill']);
   $router->delete('/monthly-bills/{id}',  ['uses' => 'MonthlyBillController@deleteMonthlyBill']);
 
-  // Readings Route
+  // Readings Route //creates monthly bill if not present and updates it if it is.
   $router->get('/readings',  ['uses' => 'ReadingController@getReadings']);
   $router->get('/readings/{id}',  ['uses' => 'ReadingController@getReading']);
   $router->get('/readings/account/{accountNo}',  ['uses' => 'ReadingController@getReadingsByAccountNo']);

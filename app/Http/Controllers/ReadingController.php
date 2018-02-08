@@ -3,11 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Reading;
+use App\Models\MonthlyBill;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Auth;
 
+use App\Http\Controllers\MonthlyBillController;
+use App\Http\Controllers\ConsumerController;
+
 class ReadingController extends Controller{
+  private $monthlyBillController;
+  private $consumerController;
+
   /**
    * Create a new controller instance.
    *
@@ -16,6 +23,9 @@ class ReadingController extends Controller{
   public function __construct()
   {
       // $this->middleware('auth');
+
+      $this->monthlyBillController = new MonthlyBillController();
+      $this->consumerController = new ConsumerController();
   }
 
   public function getReadings(){
@@ -42,10 +52,33 @@ class ReadingController extends Controller{
   }
 
   public function createReading(Request $request){
+    $allData = $request->all();
+    if(empty($allData["reading_date"])) $allData["reading_date"] = date('Y-m-d H:i:s');
 
-    	$reading = Reading::create($request->all());
+    $reading = Reading::create($allData);
 
-    	return response()->json($reading);
+    $accountNo = $allData["account_no"];
+    $readDate = $allData["reading_date"];
+
+    $startDate = date('Y-m-01 00:00:00', strtotime($readDate));
+    $endDate  = date('Y-m-t 23:59:59', strtotime($readDate));
+
+    $monthlyBills = $this->monthlyBillController->getMonthlyBillsByAccountNoAndDates($accountNo, $startDate, $endDate);
+    if($monthlyBills->isEmpty()){
+      $monthlyBill = [];
+      $monthlyBill['account_no'] = $accountNo;
+      $monthlyBill['previous_reading'] = $reading['previous_reading'];
+      $monthlyBill['current_reading'] = $reading['current_reading'];
+      $this->monthlyBillController->insertMonthlyBill($monthlyBill);
+    }else{
+      $monthlyBill = $monthlyBills->first();
+      $monthlyBill['previous_reading'] = $monthlyBill['current_reading'];
+      $monthlyBill['current_reading'] = $reading['current_reading'];
+
+      $monthlyBill->save();
+    }
+
+  	return response()->json($reading);
 	}
 
   public function updateReading($id, Request $request){
