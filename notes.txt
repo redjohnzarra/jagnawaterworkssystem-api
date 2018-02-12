@@ -29,3 +29,12 @@ ex: axios.create({
     timeout: 1000,
     headers: {'Authenticate': VALUE_SA_api_key}
   });
+
+
+
+
+
+
+#NOTES HERE:
+composer dump-autoload
+php artisan make:migration create_users_table

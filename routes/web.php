@@ -46,6 +46,7 @@ $router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($ro
   $router->get('/monthly-bills',  ['uses' => 'MonthlyBillController@getMonthlyBills']);
   $router->get('/monthly-bills/{id}',  ['uses' => 'MonthlyBillController@getMonthlyBill']);
   $router->get('/monthly-bills/account/{accountNo}',  ['uses' => 'MonthlyBillController@getMonthlyBillsByAccountNo']);
+  $router->get('/monthly-bills/unpaid/account/{accountNo}',  ['uses' => 'MonthlyBillController@getUnpaidMonthlyBillsByAccountNo']);
   $router->post('/monthly-bills',  ['uses' => 'MonthlyBillController@createMonthlyBill']);
   $router->post('/monthly-bills/{id}',  ['uses' => 'MonthlyBillController@updateMonthlyBill']);
   $router->delete('/monthly-bills/{id}',  ['uses' => 'MonthlyBillController@deleteMonthlyBill']);
@@ -66,6 +67,10 @@ $router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($ro
   $router->post('/payments',  ['uses' => 'PaymentController@createPayment']);
   $router->post('/payments/{id}',  ['uses' => 'PaymentController@updatePayment']);
   $router->delete('/payments/{id}',  ['uses' => 'PaymentController@deletePayment']);
+
+  // Payments Route
+  $router->get('/settings',  ['uses' => 'SettingsController@getSettings']);
+  $router->post('/settings',  ['uses' => 'SettingsController@upsertSettings']);
 
   // SMS Route
   $router->post('/send-sms', ['uses' => 'SMSController@sendSMSURL']);

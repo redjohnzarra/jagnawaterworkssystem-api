@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Auth;
 
+use App\Http\Controllers\MonthlyBillController;
+
 class PaymentController extends Controller{
   /**
    * Create a new controller instance.
@@ -16,6 +18,7 @@ class PaymentController extends Controller{
   public function __construct()
   {
       // $this->middleware('auth');
+      $this->monthlyBillController = new MonthlyBillController();
   }
 
   public function getPayments(){
@@ -53,8 +56,15 @@ class PaymentController extends Controller{
   }
 
   public function createPayment(Request $request){
+      $userInput = $request->all();
+      $monthlyBill = $this->monthlyBillController->getMonthlyBillObj($userInput('bill_no'));
+      if(!empty($monthlyBill)){
+        $monthlyBill["paid"] = $userInput["total_amount"];
+        $monthlyBill["unpaid"] = $monthlyBill["net_amount"] - $monthlyBill["paid"];
+        $monthlyBill->save();
+      }
 
-    	$payment = Payment::create($request->all());
+    	$payment = Payment::create($userInput);
 
     	return response()->json($payment);
 	}

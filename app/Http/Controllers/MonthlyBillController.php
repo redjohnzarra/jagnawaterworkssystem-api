@@ -33,9 +33,15 @@ class MonthlyBillController extends Controller{
 	}
 
   public function getMonthlyBill($id){
-    	$monthlyBill  = MonthlyBill::find($id);
+    	$monthlyBill  = $this->getMonthlyBillObj($id);
 
     	return response()->json($monthlyBill);
+	}
+
+  public function getMonthlyBillObj($id){
+    	$monthlyBill  = MonthlyBill::find($id);
+
+    	return $monthlyBill;
 	}
 
   public function getMonthlyBillsByAccountNo($accountNo, Request $request){
@@ -50,8 +56,15 @@ class MonthlyBillController extends Controller{
     return response()->json($monthlyBills);
   }
 
+  public function getUnpaidMonthlyBillsByAccountNo($accountNo, Request $request){
+    $unpaidMonthlyBills = MonthlyBill::whereRaw('account_no = ? and unpaid > 0', [$accountNo])->get();
+
+    return response()->json($unpaidMonthlyBills);
+  }
+
   public function getMonthlyBillsByAccountNoAndDates($accountNo, $startDate, $endDate){
     $monthlyBills = MonthlyBill::where('account_no', $accountNo)->whereBetween('created_at', [$startDate, $endDate])->orderBy('created_at', 'DESC')->get();
+    // $month
 
     return $monthlyBills;
   }

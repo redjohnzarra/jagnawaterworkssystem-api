@@ -24,8 +24,13 @@ class ConsumerTypeController extends Controller{
   }
 
   public function getConsumerType($consumerTypeId) {
-    $consumerType = ConsumerType::find($consumerTypeId);
+    $consumerType = $this->getConsumerTypeObj($consumerTypeId);
     return response()->json($consumerType);
+  }
+
+  public function getConsumerTypeObj($consumerTypeId) {
+    $consumerType = ConsumerType::find($consumerTypeId);
+    return $consumerType;
   }
 
   public function createConsumerType(Request $request){
