@@ -37,6 +37,7 @@ class CreateConsumerTable extends Migration
                   ->onDelete('cascade');
             $table->date('connection_date')->nullable();
             $table->integer('meter_number')->nullable();
+            $table->double('current_balance')->nullable();
             $table->timestamps();
         });
     }

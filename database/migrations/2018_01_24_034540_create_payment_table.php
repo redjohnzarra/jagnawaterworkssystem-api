@@ -20,10 +20,7 @@ class CreatePaymentTable extends Migration
             $table->foreign('account_no')
                   ->references('account_no')->on('consumer')
                   ->onDelete('cascade');
-            $table->integer('bill_no')->unsigned();
-            $table->foreign('bill_no')
-                  ->references('id')->on('monthly_bill')
-                  ->onDelete('cascade');
+            $table->string('bill_no')->nullable();
             $table->double('total_amount')->nullable();
             $table->datetime('payment_date')->nullable();
             $table->double('penalty')->nullable();

@@ -78,9 +78,10 @@ class MonthlyBillController extends Controller{
 
   public function insertMonthlyBill($userInput){
     $consumer = $this->consumerController->getConsumerObj($userInput['account_no']);
-
     if(!empty($consumer)){
-      if(empty($userInput['bill_no'])) $userInput['bill_no'] = $this->commonController->billNoGenerator();
+      if(empty($userInput['bill_no'])){
+        $userInput['bill_no'] = $this->commonController->billNoGenerator();
+      }
 
       if(empty($userInput['consumer_type'])) $userInput['consumer_type'] = $consumer->consumer_type;
     }

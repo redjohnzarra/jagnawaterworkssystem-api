@@ -84,8 +84,6 @@ class ReadingController extends Controller{
     $allData = $request->all();
     if(empty($allData["reading_date"])) $allData["reading_date"] = date('Y-m-d H:i:s');
 
-    $reading = Reading::create($allData);
-
     $accountNo = $allData["account_no"];
     $readDate = $allData["reading_date"];
 
@@ -115,6 +113,8 @@ class ReadingController extends Controller{
       $prevReading = $lastRead['current_reading'];
     }
 
+    $reading = Reading::create($allData);
+
     $monthlyBills = $this->monthlyBillController->getMonthlyBillsByAccountNoAndDates($accountNo, $startDate, $endDate);
     $consumer = $this->consumerController->getConsumerObj($accountNo);
     $consumerType = $this->consumerTypeController->getConsumerTypeObj($consumer["consumer_type"]);
@@ -126,6 +126,7 @@ class ReadingController extends Controller{
     $charges = 0;
     if($monthlyBills->isEmpty()){
       if(!empty($consumer)){
+        if(!empty($allData['$charges'])) $charges = $allData['$charges'];
         $monthlyBill = [];
         $monthlyBill['account_no'] = $accountNo;
         $monthlyBill['previous_reading'] = $prevReading;
@@ -133,10 +134,13 @@ class ReadingController extends Controller{
         $monthlyBill['consumption'] = $reading['current_reading'] - $prevReading;
         $monthlyBill['cubic_meter_amt'] = $cubicMeterAmt;
         $monthlyBill['billing_date'] = date('Y-m-d H:i:s');
+        $monthlyBill['charges'] = $charges;
         $monthlyBill['net_amount'] = $monthlyBill['consumption']*($monthlyBill['cubic_meter_amt']) + $monthlyBill['charges'];
-        $this->monthlyBillController->insertMonthlyBill($monthlyBill);
+        $monthlyBill['paid'] = 0;
         $monthlyBill['unpaid'] = $monthlyBill['net_amount'] - $monthlyBill['paid'];
         $monthlyBill['due_date'] = $billDueDate;
+        $monthlyBill['meter_no'] = $consumer["meter_number"];
+        $this->monthlyBillController->insertMonthlyBill($monthlyBill);
       }
     }else{
       $monthlyBill = $monthlyBills->first();
@@ -155,6 +159,7 @@ class ReadingController extends Controller{
       $monthlyBill['unpaid'] = $monthlyBill['net_amount'] - $monthlyBill['paid'];
 
       $monthlyBill['due_date'] = $billDueDate;
+      $monthlyBill['meter_no'] = $consumer["meter_number"];
 
       $monthlyBill->save();
     }

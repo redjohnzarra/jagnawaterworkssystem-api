@@ -7,6 +7,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Auth;
 
+use App\Models\MonthlyBill;
+
+use App\Http\Controllers\CommonController;
+use App\Http\Controllers\ConsumerController;
 use App\Http\Controllers\MonthlyBillController;
 
 class PaymentController extends Controller{
@@ -18,7 +22,9 @@ class PaymentController extends Controller{
   public function __construct()
   {
       // $this->middleware('auth');
+      $this->commonController = new CommonController();
       $this->monthlyBillController = new MonthlyBillController();
+      $this->consumerController = new ConsumerController();
   }
 
   public function getPayments(){
@@ -47,9 +53,9 @@ class PaymentController extends Controller{
 
   public function getPaymentsByMonthlyBill($monthlyBillId, Request $request){
     if(empty($request->input('startDate')) && empty($request->input('endDate'))){
-      $payments = Payment::where('bill_no', $monthlyBillId)->get();
+      $payments = Payment::where('bill_id', $monthlyBillId)->get();
     }else{
-      $payments = Payment::where('bill_no', $monthlyBillId)->whereBetween('payment_date', [$request->input('startDate'), $request->input('endDate')])->get();
+      $payments = Payment::where('bill_id', $monthlyBillId)->whereBetween('payment_date', [$request->input('startDate'), $request->input('endDate')])->get();
     }
 
     return response()->json($payments);
@@ -57,13 +63,31 @@ class PaymentController extends Controller{
 
   public function createPayment(Request $request){
       $userInput = $request->all();
-      $monthlyBill = $this->monthlyBillController->getMonthlyBillObj($userInput('bill_no'));
+      $monthlyBill = MonthlyBill::where('bill_no', $userInput['bill_no'])->get()->first();
+      if(!empty($userInput['bill_id'])){
+        $monthlyBill = $this->monthlyBillController->getMonthlyBillObj($userInput['bill_id']);
+      }
       if(!empty($monthlyBill)){
-        $monthlyBill["paid"] = $userInput["total_amount"];
+        $penalty = empty($userInput["penalty"])? 0:$userInput["penalty"];
+        $monthlyBill["paid"] = $userInput["total_amount"] - $penalty;
         $monthlyBill["unpaid"] = $monthlyBill["net_amount"] - $monthlyBill["paid"];
         $monthlyBill->save();
+
+        $userInput["bill_no"] = $monthlyBill['bill_no'];
       }
 
+      $consumer = $this->consumerController->getConsumerObj($userInput['account_no']);
+      if(!empty($consumer)){
+        if($monthlyBill["unpaid"] <= 0){
+          $consumer['current_balance'] = $consumer['current_balance'] - $monthlyBill["unpaid"];
+          $consumer->save();
+        }
+      }
+
+      $currentDate = date("Y-m-d H:i:s");
+      $userInput["payment_date"] = $currentDate;
+      $userInput["or_no"] = $this->commonController->orNoGenerator();
+      $userInput["or_date"] = $currentDate;
     	$payment = Payment::create($userInput);
 
     	return response()->json($payment);

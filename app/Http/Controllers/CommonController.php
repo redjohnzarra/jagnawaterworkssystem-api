@@ -34,4 +34,8 @@ class CommonController extends Controller{
     $monYear = date("Ym");
     return $monYear.$this->generateRandomNumbers();
   }
+
+  public function orNoGenerator() {
+    return $this->generateRandomNumbers(12);
+  }
 }

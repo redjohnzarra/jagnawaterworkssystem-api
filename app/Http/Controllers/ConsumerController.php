@@ -37,8 +37,9 @@ class ConsumerController extends Controller{
   }
 
   public function createConsumer(Request $request){
-
-    	$consumer = Consumer::create($request->all());
+      $userInput = $request->all();
+      if(empty($userInput['application_date'])) $userInput['application_date'] = date("Y-m-d H:i:s");
+    	$consumer = Consumer::create($userInput);
 
     	return response()->json($consumer);
 	}
