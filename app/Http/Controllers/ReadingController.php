@@ -123,8 +123,15 @@ class ReadingController extends Controller{
       $cubicMeterAmt = $consumerType["price"];
     }
 
+    $monthlyBillUnpaid = null;
+    foreach($monthlyBills as $mb){
+      if($mb["unpaid"] > 0){
+        $monthlyBillUnpaid = $mb;
+      }
+    }
+
     $charges = 0;
-    if($monthlyBills->isEmpty()){
+    if($monthlyBills->isEmpty() || $monthlyBillUnpaid == null){
       if(!empty($consumer)){
         if(!empty($allData['$charges'])) $charges = $allData['$charges'];
         $monthlyBill = [];
@@ -143,7 +150,8 @@ class ReadingController extends Controller{
         $this->monthlyBillController->insertMonthlyBill($monthlyBill);
       }
     }else{
-      $monthlyBill = $monthlyBills->first();
+      $monthlyBill = $monthlyBillUnpaid;
+
       // $monthlyBill['previous_reading'] = $monthlyBill['current_reading'];
       $monthlyBill['current_reading'] = $reading['current_reading'];
       if($monthlyBill["cubic_meter_amt"] == 0){

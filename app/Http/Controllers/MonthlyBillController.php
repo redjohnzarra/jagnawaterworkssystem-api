@@ -59,6 +59,12 @@ class MonthlyBillController extends Controller{
   public function getUnpaidMonthlyBillsByAccountNo($accountNo, Request $request){
     $unpaidMonthlyBills = MonthlyBill::whereRaw('account_no = ? and unpaid > 0', [$accountNo])->get();
 
+    foreach($unpaidMonthlyBills as $key=>$umb){
+      if(strtotime('+2 day') > strtotime($umb['due_date'])){
+        $umb["penalty"] = 0.02 * ($umb['net_amount']);
+        $unpaidMonthlyBills[$key] = $umb;
+      }
+    }
     return response()->json($unpaidMonthlyBills);
   }
 
