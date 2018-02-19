@@ -42,27 +42,23 @@ class ConsumerController extends Controller{
 
     	$consumer = Consumer::create($userInput);
 
-      $hasChanges = false;
-      if($userInput['picture']){
-        $picture = $this->imageForSaving($userInput['picture']);
-        $consumer->picture = $picture;
-        $hasChanges = true;
-      }
-
-      if($userInput['signature_of_member']){
-        $signature = $this->imageForSaving($userInput['signature_of_member']);
-        $consumer->signature_of_member = $signature;
-        $hasChanges = true;
-      }
-
-      if($hasChanges) $consumer->save();
+      // $hasChanges = false;
+      // if($userInput['picture']){
+      //   $picture = $this->imageForSaving($userInput['picture']);
+      //   $consumer->picture = $picture;
+      //   $hasChanges = true;
+      // }
+      //
+      // if($userInput['signature_of_member']){
+      //   $signature = $this->imageForSaving($userInput['signature_of_member']);
+      //   $consumer->signature_of_member = $signature;
+      //   $hasChanges = true;
+      // }
+      //
+      // if($hasChanges) $consumer->save();
 
     	return response()->json($consumer);
 	}
-
-  public function saveConsumerPicture(){
-
-  }
 
   public function imageForSaving($image){
     // Get the file from the request
@@ -84,10 +80,10 @@ class ConsumerController extends Controller{
       }else{
         foreach($userInput as $key=>$item){
           if($key != 'userid') $consumer[$key] = $item;
-          if($key == 'picture' || $key == 'signature_of_member'){
-            $image = $this->imageForSaving($userInput[$key]);
-            $consumer[$key] = $image;
-          }
+          // if($key == 'picture' || $key == 'signature_of_member'){
+          //   $image = $this->imageForSaving($userInput[$key]);
+          //   $consumer[$key] = $image;
+          // }
         }
 
       	// $consumer->lname = $request->input('lname');
