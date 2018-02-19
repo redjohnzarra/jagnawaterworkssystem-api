@@ -38,6 +38,8 @@ $router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($ro
   // Consumers Route
   $router->get('/consumers',  ['uses' => 'ConsumerController@getConsumers']);
   $router->get('/consumers/{accountNo}',  ['uses' => 'ConsumerController@getConsumer']);
+  $router->get('/consumers/{accountNo}/picture',  ['uses' => 'ConsumerController@getConsumerPicture']);
+  $router->get('/consumers/{accountNo}/signature',  ['uses' => 'ConsumerController@getConsumerSignature']);
   $router->post('/consumers',  ['uses' => 'ConsumerController@createConsumer']);
   $router->post('/consumers/{accountNo}',  ['uses' => 'ConsumerController@updateConsumer']);
   $router->delete('/consumers/{accountNo}',  ['uses' => 'ConsumerController@deleteConsumer']);
