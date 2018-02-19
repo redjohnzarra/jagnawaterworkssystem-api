@@ -6,6 +6,7 @@ use App\Models\Consumer;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Auth;
+use finfo;
 
 class ConsumerController extends Controller{
   /**
