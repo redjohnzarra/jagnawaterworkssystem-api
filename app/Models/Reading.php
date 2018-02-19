@@ -14,7 +14,7 @@ class Reading extends Model
    * @var array
    */
   protected $fillable = [
-  	'service_period_end','account_no','reading_date','read_by','current_reading','previous_reading','meter_number'
+  	'service_period_end','account_no','reading_date','read_by','current_reading','previous_reading','meter_number','status'
   ];
 
   /**

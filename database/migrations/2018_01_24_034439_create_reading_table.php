@@ -28,6 +28,7 @@ class CreateReadingTable extends Migration
             $table->integer('current_reading')->nullable();
             $table->integer('previous_reading')->nullable();
             $table->integer('meter_number')->nullable();
+            $table->boolean('status')->nullable();
             $table->timestamps();
         });
     }
