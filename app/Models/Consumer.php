@@ -14,7 +14,7 @@ class Consumer extends Model
    * @var array
    */
   protected $fillable = [
-  	'lname','fname','mname','address','birth_date','municipality','barangay','citizenship','status','sex','orno_appfee','application_date','appfee','signature_of_member','picture','consumer_type','connection_date','meter_number'
+  	'lname','fname','mname','address','birth_date','municipality','barangay','citizenship','status','sex','orno_appfee','application_date','appfee','signature_of_member','picture','consumer_type','connection_date','meter_number','contact_no'
   ];
 
   protected $primaryKey = 'account_no';
