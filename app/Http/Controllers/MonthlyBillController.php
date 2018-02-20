@@ -96,8 +96,8 @@ class MonthlyBillController extends Controller{
   public function monthlyBillsReport(Request $request){
     $consumers = Consumer::orderBy('lname')->get();
     $userInput = $request->all();
-    $startDate = !empty($userInput['startDate'])?$userInput['startDate']:date("Y-m-d");
-    $endDate = !empty($userInput['endDate'])?$userInput['endDate']:date("Y-m-d");
+    $startDate = !empty($userInput['startDate'])?$userInput['startDate']:date("Y-m-01");
+    $endDate = !empty($userInput['endDate'])?$userInput['endDate']:date("Y-m-t");
     $forReturn = [];
     foreach($consumers as $consumer){
       $consumerData = [];
