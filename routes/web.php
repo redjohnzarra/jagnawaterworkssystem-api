@@ -25,6 +25,10 @@ $router->group(['prefix' => 'userApi'], function () use ($router) {
   $router->get('/users/{id}',  ['uses' => 'UserPrivilegesController@getUser']);
   $router->post('/users/{id}',  ['uses' => 'UserPrivilegesController@updateUserPrivileges']);
   $router->delete('/users/{id}',  ['uses' => 'UserPrivilegesController@deleteUserPrivileges']);
+
+  //public for consumer's inquiry
+  $router->get('/inquiry/monthly-bills/unpaid/account',  ['uses' => 'MonthlyBillController@consumersInquiry']);
+
 });
 
 $router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($router) {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\MonthlyBill;
+use App\Models\Consumer;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Auth;
@@ -44,6 +45,7 @@ class MonthlyBillController extends Controller{
     	return $monthlyBill;
 	}
 
+
   public function getMonthlyBillsByAccountNo($accountNo, Request $request){
     if(empty($request->input('startDate')) && empty($request->input('endDate'))){
       $monthlyBills = MonthlyBill::where('account_no', $accountNo)->get();
@@ -57,6 +59,11 @@ class MonthlyBillController extends Controller{
   }
 
   public function getUnpaidMonthlyBillsByAccountNo($accountNo, Request $request){
+    $unpaidMonthlyBills = $this->getUnpaidMonthlyBillsObj($accountNo);
+    return response()->json($unpaidMonthlyBills);
+  }
+
+  public function getUnpaidMonthlyBillsObj($accountNo){
     $unpaidMonthlyBills = MonthlyBill::whereRaw('account_no = ? and unpaid > 0', [$accountNo])->get();
 
     foreach($unpaidMonthlyBills as $key=>$umb){
@@ -65,7 +72,25 @@ class MonthlyBillController extends Controller{
         $unpaidMonthlyBills[$key] = $umb;
       }
     }
-    return response()->json($unpaidMonthlyBills);
+
+    return $unpaidMonthlyBills;
+  }
+
+  public function consumersInquiry(Request $request){
+    $userInput = $request->all();
+    $account_no = !empty($userInput['account_no'])?$userInput['account_no']:'';
+    $lname = !empty($userInput['lname'])?$userInput['lname']:'';
+    $fname = !empty($userInput['fname'])?$userInput['fname']:'';
+    $mname = !empty($userInput['mname'])?$userInput['mname']:'';
+    $users = Consumer::whereRaw('account_no = ? and lname = ? and fname = ? and mname = ? ', [$account_no, $lname, $fname, $mname])->get();
+    $forReturn = [];
+    if(!empty($users)){
+      $user = $users->first();
+      $forReturn['unpaid'] = $this->getUnpaidMonthlyBillsObj($user->account_no);
+      $forReturn['fullname'] = $user->lname.', '.$user->fname.' '.$user->mname;
+    }
+
+    return response()->json($forReturn);
   }
 
   public function getMonthlyBillsByAccountNoAndDates($accountNo, $startDate, $endDate){

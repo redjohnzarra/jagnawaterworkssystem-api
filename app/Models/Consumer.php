@@ -24,7 +24,7 @@ class Consumer extends Model
    *
    * @var array
    */
-  protected $hidden = ['picture'];
+  protected $hidden = ['picture','signature_of_member'];
 
   public function readings(){
     return $this->hasMany('App\Models\Reading');

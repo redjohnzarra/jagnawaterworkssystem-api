@@ -21,6 +21,18 @@ class ConsumerController extends Controller{
 
   public function getConsumers() {
     $objList = Consumer::orderBy('lname')->get();
+    foreach($objList as $obj){
+      $hasPicture = false;
+      $hasSignature = false;
+      if($obj->picture != null){
+        $hasPicture = true;
+      }
+      if($obj->signature_of_member != null){
+        $hasSignature = true;
+      }
+      $obj->haspicture = $hasPicture;
+      $obj->hassignature_of_member = $hasSignature;
+    }
     return response()->json($objList);
 
     // $consumers  = Consumer::all();
@@ -30,6 +42,16 @@ class ConsumerController extends Controller{
 
   public function getConsumer($accountNo) {
     $consumer = $this->getConsumerObj($accountNo);
+    $hasPicture = false;
+    $hasSignature = false;
+    if($consumer->picture != null){
+      $hasPicture = true;
+    }
+    if($consumer->signature_of_member != null){
+      $hasSignature = true;
+    }
+    $consumer->haspicture = $hasPicture;
+    $consumer->hassignature_of_member = $hasSignature;
     return response()->json($consumer);
   }
 
