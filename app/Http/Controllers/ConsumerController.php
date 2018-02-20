@@ -123,8 +123,8 @@ class ConsumerController extends Controller{
 
     // Return the image in the response with the correct MIME type
     $picture = $consumer->picture;
-    $data = base64_decode(substr($picture,23));
-    // $data = base64_decode($picture);
+    // $data = base64_decode(substr($picture,23));
+    $data = base64_decode($picture); //uncomment if data:image/jpeg;base64,
 
     // echo '<img src="'.$picture.'"/>';
     return response()->make($data, 200, array(
@@ -136,8 +136,8 @@ class ConsumerController extends Controller{
     $consumer = Consumer::find($accountNo);
 
     $signature = $consumer->signature_of_member;
-    $data = base64_decode(substr($signature,23));
-    // $data = base64_decode($signature);
+    // $data = base64_decode(substr($signature,23));
+    $data = base64_decode($signature); //uncomment if data:image/jpeg;base64,
 
     // echo '<img src="'.$signature.'"/>';
     // Return the image in the response with the correct MIME type
