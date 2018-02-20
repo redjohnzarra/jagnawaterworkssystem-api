@@ -60,6 +60,7 @@ class SMSController extends Controller
 
     public function sendSMSBillToAllConsumer(){
       $consumers = Consumer::orderBy('lname')->get();
+      $forReturn = [];
       foreach($consumers as $consumer){
         $unpaidMonthlyBills = $this->monthlyBillController->getUnpaidMonthlyBillsObj($consumer->account_no);
         $totalUnpaid = 0;
@@ -69,8 +70,15 @@ class SMSController extends Controller
         $message = "Hello ".$consumer->fname." ".$consumer->lname.", your balance as of ".date("m/d/Y")." is ₱ ".number_format($totalUnpaid, 2, '.', '').". (Subject to change)";
 
         if(!empty($consumer->contact_no)){
-          $this->sendSMS($consumer->contact_no, $message);
+          try{
+            $this->sendSMS($consumer->contact_no, $message);
+            array_push($forReturn, "Message successfully sent to ".$consumer->contact_no." (".$consumer->fname." ".$consumer->lname.")");
+          }catch(Exception $e){
+            array_push($forReturn, "Message sending failed to ".$consumer->contact_no." (".$consumer->fname." ".$consumer->lname.")");
+          }
         }
       }
+
+      return response()->json($forReturn);
     }
 }
