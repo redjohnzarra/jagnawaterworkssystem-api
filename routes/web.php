@@ -57,6 +57,8 @@ $router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($ro
   $router->post('/monthly-bills/{id}',  ['uses' => 'MonthlyBillController@updateMonthlyBill']);
   $router->delete('/monthly-bills/{id}',  ['uses' => 'MonthlyBillController@deleteMonthlyBill']);
 
+  $router->get('/monthly-bills-report',  ['uses' => 'MonthlyBillController@monthlyBillsReport']); //pwede naay startDate ug endDate
+
   // Readings Route //creates monthly bill if not present and updates it if it is.
   $router->get('/readings',  ['uses' => 'ReadingController@getReadings']);
   $router->get('/readings/{id}',  ['uses' => 'ReadingController@getReading']);
@@ -80,4 +82,5 @@ $router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($ro
 
   // SMS Route
   $router->post('/send-sms', ['uses' => 'SMSController@sendSMSURL']);
+  $router->get('/send-sms-to-all-for-current-bill', ['uses' => 'SMSController@sendSMSBillToAllConsumer']);
 });

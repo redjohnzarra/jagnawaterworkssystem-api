@@ -93,6 +93,23 @@ class MonthlyBillController extends Controller{
     return response()->json($forReturn);
   }
 
+  public function monthlyBillsReport(Request $request){
+    $consumers = Consumer::orderBy('lname')->get();
+    $userInput = $request->all();
+    $startDate = !empty($userInput['startDate'])?$userInput['startDate']:date("Y-m-d");
+    $endDate = !empty($userInput['endDate'])?$userInput['endDate']:date("Y-m-d");
+    $forReturn = [];
+    foreach($consumers as $consumer){
+      $consumerData = [];
+      $consumerData['monthlyBills'] = $this->getMonthlyBillsByAccountNoAndDates($consumer->account_no, $startDate, $endDate);
+      $consumerData['consumerInfo'] = $consumer;
+
+      array_push($forReturn, $consumerData);
+    }
+
+    return response()->json($forReturn);
+  }
+
   public function getMonthlyBillsByAccountNoAndDates($accountNo, $startDate, $endDate){
     $monthlyBills = MonthlyBill::where('account_no', $accountNo)->whereBetween('created_at', [$startDate, $endDate])->orderBy('created_at', 'DESC')->get();
     // $month

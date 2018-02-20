@@ -1,9 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Consumer;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+
+use App\Http\Controllers\MonthlyBillController;
 
 class SMSController extends Controller
 {
@@ -14,7 +17,7 @@ class SMSController extends Controller
      */
     public function __construct()
     {
-        //
+        $this->monthlyBillController = new MonthlyBillController();
     }
 
     public function sendSMSURL(Request $request){
@@ -53,5 +56,21 @@ class SMSController extends Controller
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			return curl_exec ($ch);
 			curl_close ($ch);
+    }
+
+    public function sendSMSBillToAllConsumer(){
+      $consumers = Consumer::orderBy('lname')->get();
+      foreach($consumers as $consumer){
+        $unpaidMonthlyBills = $this->monthlyBillController->getUnpaidMonthlyBillsObj($consumer->account_no);
+        $totalUnpaid = 0;
+        foreach($unpaidMonthlyBills as $unpaidBill){
+          $totalUnpaid += $unpaidBill->unpaid;
+        }
+        $message = "Hello ".$consumer->fname." ".$consumer->lname.", your balance as of ".date("m/d/Y")." is ₱ ".number_format($totalUnpaid, 2, '.', '').". (Subject to change)";
+
+        if(!empty($consumer->contact_no)){
+          $this->sendSMS($consumer->contact_no, $message);
+        }
+      }
     }
 }
