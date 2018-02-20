@@ -122,17 +122,25 @@ class ConsumerController extends Controller{
     $consumer = Consumer::find($accountNo);
 
     // Return the image in the response with the correct MIME type
-    return response()->make($consumer->picture, 200, array(
-        'Content-Type' => (new finfo(FILEINFO_MIME))->buffer($consumer->picture)
+    $picture = $consumer->picture;
+    $data = base64_decode(substr($picture,23));
+
+    // echo '<img src="'.$picture.'"/>';
+    return response()->make($data, 200, array(
+        'Content-Type' => (new finfo(FILEINFO_MIME))->buffer($data)
     ));
   }
 
   public function getConsumerSignature($accountNo, Request $request){
     $consumer = Consumer::find($accountNo);
 
+    $signature = $consumer->signature_of_member;
+    $data = base64_decode(substr($signature,23));
+
+    // echo '<img src="'.$signature.'"/>';
     // Return the image in the response with the correct MIME type
-    return response()->make($consumer->signature_of_member, 200, array(
-        'Content-Type' => (new finfo(FILEINFO_MIME))->buffer($consumer->signature_of_member)
+    return response()->make($data, 200, array(
+        'Content-Type' => (new finfo(FILEINFO_MIME))->buffer($data)
     ));
   }
 
