@@ -44,14 +44,14 @@ class SMSController extends Controller
     }
 
     public function sendSMS($sendTo, $message){
-      $apiCode = "TR-REDEN478675_NKT67"; //Trial API Code with 10 SMS/day .. Register at www.itexmo.com
+      $apiCode = "TR-XYZAD056134_6UWV3"; //Trial API Code with 10 SMS/day .. Register at www.itexmo.com
       $itextmoURL = "https://www.itexmo.com/php_api/api.php";
 
       $ch = curl_init();
 			$itexmo = array('1' => $sendTo, '2' => $message, '3' => $apiCode);
 			curl_setopt($ch, CURLOPT_URL, $itextmoURL);
 			curl_setopt($ch, CURLOPT_POST, 1);
-			 curl_setopt($ch, CURLOPT_POSTFIELDS,
+			curl_setopt($ch, CURLOPT_POSTFIELDS,
 			          http_build_query($itexmo));
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			return curl_exec ($ch);
@@ -67,12 +67,18 @@ class SMSController extends Controller
         foreach($unpaidMonthlyBills as $unpaidBill){
           $totalUnpaid += $unpaidBill->unpaid;
         }
-        $message = "Hello ".$consumer->fname." ".$consumer->lname.", your balance as of ".date("m/d/Y")." is ₱ ".number_format($totalUnpaid, 2, '.', '').". (Subject to change)";
+        $message = "Hello ".$consumer->fname." ".$consumer->lname.", your balance as of ".date("m/d/Y")." is Php ".number_format($totalUnpaid, 2, '.', ',').". (Subject to change)";
 
         if(!empty($consumer->contact_no)){
           try{
-            $this->sendSMS($consumer->contact_no, $message);
-            array_push($forReturn, "Message successfully sent to ".$consumer->contact_no." (".$consumer->fname." ".$consumer->lname.")");
+            $response = $this->sendSMS($consumer->contact_no, $message);
+
+            $json = json_decode($response, true);
+            if ($json == "0") {
+              array_push($forReturn, "Message successfully sent to ".$consumer->contact_no." (".$consumer->fname." ".$consumer->lname.")");
+            }else{
+              array_push($forReturn, "Message sending failed to ".$consumer->contact_no." (".$consumer->fname." ".$consumer->lname."). Error: ".$json);
+            }
           }catch(Exception $e){
             array_push($forReturn, "Message sending failed to ".$consumer->contact_no." (".$consumer->fname." ".$consumer->lname.")");
           }
