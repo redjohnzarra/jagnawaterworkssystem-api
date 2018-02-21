@@ -39,4 +39,3 @@ ex: axios.create({
 composer dump-autoload
 php artisan make:migration create_users_table
 
-sample update
