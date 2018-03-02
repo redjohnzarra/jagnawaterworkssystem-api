@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Consumer;
+use App\Models\UserPrivileges;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Auth;
 use finfo;
 
@@ -65,6 +67,17 @@ class ConsumerController extends Controller{
 
     	$consumer = Consumer::create($userInput);
 
+      $username = str_replace(' ', '', $userInput["fname"]).".".str_replace(' ', '', $userInput["mname"]).".".str_replace(' ', '', $userInput["lname"]);
+      $password = date("mdY", strtotime($userInput["birth_date"]));
+      $userLevel = "consumer";
+      $accountNo = $consumer["account_no"];
+
+      $user = UserPrivileges::create([
+          'username' => $username,
+          'password'=> Hash::make($password),
+          'userlevel' => $userLevel,
+          'account_no' => $accountNo
+      ]);
       // $hasChanges = false;
       // if($userInput['picture']){
       //   $picture = $this->imageForSaving($userInput['picture']);
@@ -80,6 +93,7 @@ class ConsumerController extends Controller{
       //
       // if($hasChanges) $consumer->save();
 
+      $consumer["user"] = $user;
     	return response()->json($consumer);
 	}
 
