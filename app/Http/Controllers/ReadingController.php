@@ -89,6 +89,7 @@ class ReadingController extends Controller{
 
     $settings = $this->settings;
     $billDueDate = date('Y-m-t 17:00:00');
+    $servicePeriod = '';
 
     $startDate = date('Y-m-01 00:00:00', strtotime($readDate));
     $endDate  = date('Y-m-t 23:59:59', strtotime($readDate));
@@ -96,6 +97,7 @@ class ReadingController extends Controller{
     if($settings){
       $currentDay = date('Y-m-d H:i:s');
       $dueDate = date('Y-m-'.$settings['due_date_day'].' '.$settings['due_date_time']);
+      $servicePeriod = empty($settings['service_period'])?"":strval($settings['service_period']);
       if(strtotime($dueDate) > strtotime($currentDay)){
         $billDueDate = $dueDate;
       }else{
@@ -112,6 +114,8 @@ class ReadingController extends Controller{
     if($lastRead){
       $prevReading = $lastRead['current_reading'];
     }
+
+    $allData['service_period_end'] = empty($allData['service_period_end'])? $servicePeriod:$allData['service_period_end'];
 
     $reading = Reading::create($allData);
 
@@ -146,6 +150,7 @@ class ReadingController extends Controller{
         $monthlyBill['paid'] = 0;
         $monthlyBill['unpaid'] = $monthlyBill['net_amount'] - $monthlyBill['paid'];
         $monthlyBill['due_date'] = $billDueDate;
+        $monthlyBill['service_period_end'] = $servicePeriod;
         $monthlyBill['meter_no'] = $consumer["meter_number"];
         $this->monthlyBillController->insertMonthlyBill($monthlyBill);
       }
@@ -167,6 +172,7 @@ class ReadingController extends Controller{
       $monthlyBill['unpaid'] = $monthlyBill['net_amount'] - $monthlyBill['paid'];
 
       $monthlyBill['due_date'] = $billDueDate;
+      $monthlyBill['service_period_end'] = $servicePeriod;
       $monthlyBill['meter_no'] = $consumer["meter_number"];
 
       $monthlyBill->save();
