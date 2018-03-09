@@ -44,7 +44,7 @@ class SMSController extends Controller
     }
 
     public function sendSMS($sendTo, $message){
-      $apiCode = "TR-XYZAD056134_6UWV3"; //Trial API Code with 10 SMS/day .. Register at www.itexmo.com
+      $apiCode = "TR-GENEV930099_CRF2H"; //Trial API Code with 10 SMS/day .. Register at www.itexmo.com
       $itextmoURL = "https://www.itexmo.com/php_api/api.php";
 
       $ch = curl_init();

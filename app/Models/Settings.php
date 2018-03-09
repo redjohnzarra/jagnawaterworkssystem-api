@@ -14,7 +14,7 @@ class Settings extends Model
    * @var array
    */
   protected $fillable = [
-  	'due_date_day','due_date_time'
+  	'due_date_day','due_date_time','service_period'
   ];
 
   /**
