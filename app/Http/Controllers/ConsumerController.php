@@ -72,12 +72,14 @@ class ConsumerController extends Controller{
       $userLevel = "consumer";
       $accountNo = $consumer["account_no"];
 
-      $user = UserPrivileges::create([
-          'username' => $username,
-          'password'=> Hash::make($password),
-          'userlevel' => $userLevel,
-          'account_no' => $accountNo
-      ]);
+      // $user = UserPrivileges::create([
+      //     'username' => $username,
+      //     'password'=> Hash::make($password),
+      //     'userlevel' => $userLevel,
+      //     'account_no' => $accountNo
+      // ]);
+
+      
       // $hasChanges = false;
       // if($userInput['picture']){
       //   $picture = $this->imageForSaving($userInput['picture']);
@@ -93,7 +95,7 @@ class ConsumerController extends Controller{
       //
       // if($hasChanges) $consumer->save();
 
-      $consumer["user"] = $user;
+      // $consumer["user"] = $user;
     	return response()->json($consumer);
 	}
 

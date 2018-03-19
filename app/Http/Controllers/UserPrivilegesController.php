@@ -48,6 +48,7 @@ class UserPrivilegesController extends Controller{
           'username' => $request->get('username'),
           'password'=> Hash::make($request->get('password')),
           'userlevel' => $request->get('userlevel'),
+          'account_no' => $request->get('account_no'),
       ]);
 
       return response()->json([
@@ -93,6 +94,7 @@ class UserPrivilegesController extends Controller{
       $user->username        = $request->get('username');
       $user->password     = Hash::make($request->get('password'));
       $user->userlevel        = $request->get('userlevel');
+      $user->account_no = $request->get('account_no');
       $user->save();
 
       return response()->json([
