@@ -46,6 +46,7 @@ class UserPrivilegesController extends Controller{
 
       $user = UserPrivileges::create([
           'username' => $request->get('username'),
+          'name' => $request->get('name'),
           'password'=> Hash::make($request->get('password')),
           'userlevel' => $request->get('userlevel'),
           'account_no' => $request->get('account_no'),
@@ -92,6 +93,7 @@ class UserPrivilegesController extends Controller{
 
 
       $user->username        = $request->get('username');
+      $user->name        = $request->get('name');
       $user->password     = Hash::make($request->get('password'));
       $user->userlevel        = $request->get('userlevel');
       $user->account_no = $request->get('account_no');

@@ -20,7 +20,7 @@ class UserPrivileges extends Model implements AuthenticatableContract, Authoriza
    * @var array
    */
   protected $fillable = [
-  	'username','userlevel','password','account_no'
+  	'username','name','userlevel','password','account_no'
   ];
 
   /**
