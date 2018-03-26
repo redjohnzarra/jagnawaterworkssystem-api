@@ -10,8 +10,8 @@
 
 ## Run Project
 To run this project
-1.run at the project's root directory
-2.php -S localhost:8000 -t public
+1. Run at the project's root directory
+2. php -S localhost:8000 -t public
 
 ## Notes && Require for login
 Download https://www.getpostman.com/ 
