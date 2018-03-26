@@ -1,22 +1,17 @@
 # jagnawaterworkssystem-api
 
-
 ## Installing
-
-1.) Create a database with name "jagnawaterworks";
-2.) ~ composer install
-3.) ~ cp .env.example .env
-3.) Set your .env file (username, password, db name and etc);
-4.) ~ php artisan migrate
+1. Create a database with name "jagnawaterworks"
+2. composer install
+3. cp .env.example .env
+3. Set your .env file (username, password, db name and etc);
+4. php artisan migrate
 
 
 ## Run Project
-to run this project
-run at the project's root directory
-=================================
-~ php -S localhost:8000 -t public
-=================================
-
+To run this project
+1.run at the project's root directory
+2.php -S localhost:8000 -t public
 
 ## Notes && Require for login
 Download https://www.getpostman.com/ 
